@@ -1,4 +1,4 @@
-# Halton-Region-Ontario-Schools-Analysis
+# Halton Region | Ontario Schools Analysis
 
 [Data Source Link](https://data.ontario.ca/dataset/school-information-and-student-demographics)
 
