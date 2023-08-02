@@ -2,6 +2,8 @@
 
 [Data Source Link](https://data.ontario.ca/dataset/school-information-and-student-demographics)
 
+[Data Definitions](https://www.app.edu.gov.on.ca/eng/sift/glossary.asp)
+
 **Data File Download Links**
 
 - [Sep 1st 2020 - June 30 2021](https://data.ontario.ca/dataset/d85f68c5-fcb0-4b4d-aec5-3047db47dcd5/resource/600ab128-f50f-43a4-b4d4-97c39bb270b6/download/new_sif_data_table_2020_21prelim_en_june2023.xlsx)
