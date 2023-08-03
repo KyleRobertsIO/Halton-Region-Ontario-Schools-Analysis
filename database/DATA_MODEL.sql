@@ -2,34 +2,34 @@ DROP TABLE IF EXISTS [dbo].[Board];
 CREATE TABLE [dbo].[Board] (
     Board_Number NVARCHAR(6) NOT NULL PRIMARY KEY,
     Name NVARCHAR(35) NOT NULL,
-    ype NVARCHAR(35) NOT NULL,
+    Type NVARCHAR(35) NOT NULL,
     Website NVARCHAR(125) NULL
 )
 
 DROP TABLE IF EXISTS [dbo].[School];
 CREATE TABLE [dbo].[School] (
-    School_Number,
-    Name,
-    Type,
-    Special_Condition_Code,
-    Level,
-    Langauge,
-    Grade_Range,
-    Phone_Number,
-    Fax_Number,
-    School_Website
+    School_Number NVARCHAR(6) NOT NULL,
+    Name NVARCHAR(50) NOT NULL,
+    Type NVARCHAR(7) NOT NULL,
+    Special_Condition_Code NVARCHAR(25) NOT NULL,
+    Level NVARCHAR(9) NOT NULL,
+    Langauge NVARCHAR(7) NOT NULL,
+    Grade_Range NVARCHAR(4) NOT NULL,
+    Phone_Number NVARCHAR(12) NULL,
+    Fax_Number NVARCHAR(12) NULL,
+    School_Website NVARCHAR(125) NULL
 )
 
 DROP TABLE IF EXISTS [dbo].[Location];
 CREATE TABLE [dbo].[Location] (
-    Building_Suite,
-    PO_Box,
-    Street_Address,
-    Municipaliy,
-    Province,
-    Postal_Code,
-    Latitude,
-    Longitude
+    Building_Suite NVARCHAR(50) NULL,
+    PO_Box NVARCHAR(15) NULL,
+    Street_Address NVARCHAR(50) NOT NULL,
+    Municipaliy NVARCHAR(50) NOT NULL,
+    Province NVARCHAR(6) NOT NULL,
+    Postal_Code NVARCHAR(6) NULL,
+    Latitude DECIMAL(12, 6) NOT NULL,
+    Longitude DECIMAL(12, 6) NOT NULL
 )
 
 DROP TABLE IF EXISTS [dbo].[Grade_3_Metrics];
