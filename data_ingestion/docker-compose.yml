@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    env_file:
+      - .env
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - "MSSQL_SA_PASSWORD=${SQL_SERVER_PASSWORD}"
+      - ACCEPT_EULA=1
+    ports:
+      - 1433:1433
+  
+  db_init:
+    build:
+      context: .
+      dockerfile: Dockerfile-db-init
+    env_file:
+      - .env
+    environment:
+      - "SQL_SERVER_DATABASE=${SQL_SERVER_DATABASE}"
+      - "SQL_SERVER_HOST=${SQL_SERVER_HOST}"
+      - "SQL_SERVER_PASSWORD=${SQL_SERVER_PASSWORD}"
+      - "SQL_SERVER_USERNAME=${SQL_SERVER_USERNAME}"
+      - "WAIT_HOSTS=${SQL_SERVER_HOST}:1433"
+      - "WAIT_TIMEOUT=30"
+      - "WAIT_SLEEP_INTERVAL=30"
+      - "WAIT_HOST_CONNECT_TIMEOUT=10"
+    depends_on:
+      - db
