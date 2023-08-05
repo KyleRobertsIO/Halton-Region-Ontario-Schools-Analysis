@@ -27,6 +27,7 @@ CREATE TABLE [staging].[ontario_school_demographics] (
     PO_Box NVARCHAR(15) NULL,
     Street_Address NVARCHAR(50) NOT NULL,
     Municipaliy NVARCHAR(50) NOT NULL,
+    City NVARCHAR(50) NULL,
     Province NVARCHAR(6) NOT NULL,
     Postal_Code NVARCHAR(6) NULL,
     Latitude DECIMAL(12, 6) NOT NULL,

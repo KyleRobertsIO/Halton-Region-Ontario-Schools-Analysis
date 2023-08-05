@@ -19,7 +19,7 @@ def download_data(
         # Attempt download of file
         file_path, download_err = _download_excel(
             url = source.download_link, 
-            storage_dir= storage_dir
+            storage_dir = storage_dir
         )
         # Handle errors
         if download_err != None:

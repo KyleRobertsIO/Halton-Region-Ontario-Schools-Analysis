@@ -1,13 +1,12 @@
 import os, sys
 from typing import List
-import pandas as pd
 from logging import Logger
-from sqlalchemy.engine import create_engine, Connection, Engine
 from ontario_schools.common.database import SQLServerConnectors
 from ontario_schools.data_ingestion.collector import download_data
 from ontario_schools.data_ingestion.types import DataSourceDetail
 from ontario_schools.data_ingestion.sources import load_sources
 from ontario_schools.data_ingestion.loader import load_data
+from ontario_schools.data_ingestion.sql_upload import upload_to_staging
 
 def create_connector() -> SQLServerConnectors.BaseConnector:
     return SQLServerConnectors.SQLLoginConnector(
@@ -40,9 +39,7 @@ def main():
         sys.exit(1)
 
     collection = load_data(data_file_references = file_refs)
-    print(collection)
-
-    logger.info("Complete!!!")
+    upload_to_staging(connector = create_connector(), data = collection)
 
     # engine: Engine = create_engine(
     #     url = create_connector().get_connection_string()
@@ -56,5 +53,5 @@ def main():
     #     sys.exit(1)
     # upload_to_staging(conn = conn)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

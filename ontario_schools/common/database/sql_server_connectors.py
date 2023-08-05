@@ -1,4 +1,5 @@
 from sqlalchemy.engine import URL
+from string import Template
 
 from abc import ABCMeta, abstractmethod
 
@@ -20,7 +21,11 @@ class BaseConnector(metaclass = ABCMeta):
             self._encrypt = encrypt
 
     @abstractmethod
-    def get_connection_string(self) -> URL:
+    def get_connection_string_pyodbc(self) -> URL:
+        pass
+    
+    @abstractmethod
+    def get_connection_string_sqlalchemy(self) -> URL:
         pass
 
 class SQLLoginConnector(BaseConnector):
@@ -46,7 +51,19 @@ class SQLLoginConnector(BaseConnector):
         self._username = username
         self._password = password
     
-    def get_connection_string(self) -> URL:
+    def get_connection_string_pyodbc(self) -> str:
+        t = Template("DRIVER=$driver;SERVER=$host;DATABASE=$database;UID=$username;PWD=$password;Encrypt=$encrypt;Connection Timeout=$timeout;Authentication=SqlPassword")
+        return t.substitute(
+            driver = self._driver,
+            host = self._host,
+            database = self._database,
+            username = self._username,
+            password = self._password,
+            encrypt = self._encrypt,
+            timeout = self._timeout
+        )
+
+    def get_connection_string_sqlalchemy(self) -> str:
         return URL.create(
             drivername = "mssql+pyodbc",
             username = self._username,
