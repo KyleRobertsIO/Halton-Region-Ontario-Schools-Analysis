@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     env_file:
-      - database.env
+      - .env.database
     image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
       - "MSSQL_SA_PASSWORD=${SQL_SERVER_PASSWORD}"
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile-db-init
     env_file:
-      - database.env
+      - .env.database
     environment:
       - "SQL_SERVER_DATABASE=${SQL_SERVER_DATABASE}"
       - "SQL_SERVER_HOST=${SQL_SERVER_HOST}"

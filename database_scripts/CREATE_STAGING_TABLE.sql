@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS [staging].[ontario_school_demographics];
 CREATE TABLE [staging].[ontario_school_demographics] (
+    Staging_Id INT IDENTITY(1,1) PRIMARY KEY,
     /*
         School Board
     */

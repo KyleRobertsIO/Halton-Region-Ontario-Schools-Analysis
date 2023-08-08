@@ -1,0 +1,17 @@
+CREATE OR ALTER FUNCTION [staging].[UDF_PERCENTAGE_CLEAN_UP] (
+    @COL_VALUE NVARCHAR(5)
+)
+RETURNS NVARCHAR(max) AS
+BEGIN
+    DECLARE @RESULT_VALUE NVARCHAR(max);
+    SET @RESULT_VALUE = (
+        SELECT
+        percentage = CASE @COL_VALUE
+            WHEN 'NA' THEN NULL
+            WHEN 'N/D' THEN NULL
+            WHEN 'N/R' THEN NULL
+            ELSE CAST(REPLACE(@COL_VALUE, '%', '') AS DECIMAL(5, 2))
+            END
+    )
+    RETURN @RESULT_VALUE
+END;
