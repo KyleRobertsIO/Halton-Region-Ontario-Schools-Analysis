@@ -13,7 +13,7 @@ CREATE TABLE [dbo].[School] (
     Type NVARCHAR(7) NOT NULL,
     Special_Condition_Code NVARCHAR(25) NOT NULL,
     Level NVARCHAR(9) NOT NULL,
-    Langauge NVARCHAR(7) NOT NULL,
+    School_Langauge NVARCHAR(7) NOT NULL,
     Grade_Range NVARCHAR(4) NOT NULL,
     Phone_Number NVARCHAR(12) NULL,
     Fax_Number NVARCHAR(12) NULL,

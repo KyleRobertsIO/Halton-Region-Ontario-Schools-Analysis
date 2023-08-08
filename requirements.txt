@@ -1,6 +1,16 @@
+python-dotenv
+
+# SQL Server installs
 SQLAlchemy>=2.0.19
 pyodbc>=4.0.39
-pandas>=2.0.3
+
+# Download installs
 wget>=3.2
+
+# Pandas installs
+pandas>=2.0.3
 openpyxl>=3.1.2
-polars>=0.18.11
+
+# Polars installs
+polars-lts-cpu>=0.18.12
+xlsx2csv>=0.8.1

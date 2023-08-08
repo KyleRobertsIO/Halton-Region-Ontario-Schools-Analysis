@@ -52,14 +52,15 @@ class SQLLoginConnector(BaseConnector):
         self._password = password
     
     def get_connection_string_pyodbc(self) -> str:
-        t = Template("DRIVER=$driver;SERVER=$host;DATABASE=$database;UID=$username;PWD=$password;Encrypt=$encrypt;Connection Timeout=$timeout;Authentication=SqlPassword")
+        t = Template('DRIVER={ODBC Driver 18 for SQL Server};SERVER=$host,$port;DATABASE=$database;UID=$username;PWD=$password;ENCRYPT=$encrypt;CONNECTION_TIMEOUT=$timeout;AUTHENTION=SqlPassword;')
         return t.substitute(
             driver = self._driver,
             host = self._host,
+            port = self._port,
             database = self._database,
             username = self._username,
             password = self._password,
-            encrypt = self._encrypt,
+            encrypt = "yes" if self._encrypt else "no",
             timeout = self._timeout
         )
 

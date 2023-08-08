@@ -3,75 +3,75 @@ CREATE TABLE [staging].[ontario_school_demographics] (
     /*
         School Board
     */
-    Board_Number NVARCHAR(6) NOT NULL PRIMARY KEY,
-    Board_Name NVARCHAR(35) NOT NULL,
-    Board_Type NVARCHAR(35) NOT NULL,
-    Board_Website NVARCHAR(125) NULL,
+    Board_Number NVARCHAR(6) NULL,
+    Board_Name NVARCHAR(max) NULL,
+    Board_Type NVARCHAR(35) NULL,
+    Board_Website NVARCHAR(max) NULL,
     /*
         School
     */
-    School_Number NVARCHAR(6) NOT NULL,
-    School_Name NVARCHAR(50) NOT NULL,
-    School_Type NVARCHAR(7) NOT NULL,
-    Special_Condition_Code NVARCHAR(25) NOT NULL,
-    Level NVARCHAR(9) NOT NULL,
-    Langauge NVARCHAR(7) NOT NULL,
-    Grade_Range NVARCHAR(4) NOT NULL,
+    School_Number NVARCHAR(6) NULL,
+    School_Name NVARCHAR(max) NULL,
+    School_Type NVARCHAR(19) NULL,
+    Special_Condition_Code NVARCHAR(25) NULL,
+    School_Level NVARCHAR(10) NULL,
+    School_Langauge NVARCHAR(7) NULL,
+    Grade_Range NVARCHAR(4) NULL,
     Phone_Number NVARCHAR(12) NULL,
     Fax_Number NVARCHAR(12) NULL,
-    School_Website NVARCHAR(125) NULL,
+    School_Website NVARCHAR(max) NULL,
     /*
         School Location
     */
     Building_Suite NVARCHAR(50) NULL,
-    PO_Box NVARCHAR(15) NULL,
-    Street_Address NVARCHAR(50) NOT NULL,
-    Municipaliy NVARCHAR(50) NOT NULL,
+    PO_Box NVARCHAR(16) NULL,
+    Street_Address NVARCHAR(50) NULL,
+    Municipality NVARCHAR(50) NULL,
     City NVARCHAR(50) NULL,
-    Province NVARCHAR(6) NOT NULL,
+    Province NVARCHAR(7) NULL,
     Postal_Code NVARCHAR(6) NULL,
-    Latitude DECIMAL(12, 6) NOT NULL,
-    Longitude DECIMAL(12, 6) NOT NULL,
+    Latitude DECIMAL(14, 12) NULL,
+    Longitude DECIMAL(14, 12) NULL,
     /*
         Grade 3 Metrics
     */
-    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading INT NULL,
-    G3_Percentage_Of_Reading_Achievement_Over_3_Years INT NULL,
-    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing INT,
-    G3_Change_In_Writing_Achievement_Over_3_Years INT NULL,
-    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math INT NULL,
-    G3_Change_In_Math_Achievement_Over_3_years INT NULL,
+    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading NVARCHAR(6) NULL,
+    G3_Percentage_Of_Reading_Achievement_Over_3_Years NVARCHAR(6) NULL,
+    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing NVARCHAR(6),
+    G3_Change_In_Writing_Achievement_Over_3_Years NVARCHAR(6) NULL,
+    G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math NVARCHAR(6) NULL,
+    G3_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
     /*
         Grade 6 Metrics
     */
-    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading INT NULL,
-    G6_Percentage_Of_Reading_Achievement_Over_3_Years INT NULL,
-    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing INT,
-    G6_Change_In_Writing_Achievement_Over_3_Years INT NULL,
-    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math INT NULL,
-    G6_Change_In_Math_Achievement_Over_3_years INT NULL,
+    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading NVARCHAR(6) NULL,
+    G6_Percentage_Of_Reading_Achievement_Over_3_Years NVARCHAR(6) NULL,
+    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing NVARCHAR(6),
+    G6_Change_In_Writing_Achievement_Over_3_Years NVARCHAR(6) NULL,
+    G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math NVARCHAR(6) NULL,
+    G6_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
     /*
         Grade 9 Metrics
     */
-    G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Academic_Math INT NULL,
-    G9_Change_In_Math_Achievement_Over_3_years INT NULL,
-    G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Applied_Math INT NULL,
-    G9_Change_In_Applied_Math_Achievement_Over_3_Years INT NULL,
+    G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Academic_Math NVARCHAR(6) NULL,
+    G9_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
+    G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Applied_Math NVARCHAR(6) NULL,
+    G9_Change_In_Applied_Math_Achievement_Over_3_Years NVARCHAR(6) NULL,
     /*
         Grade 10 Metrics
     */
-    G10_Percentage_Of_Students_That_Passed_The_OSSLT_On_First_Attempt INT NULL,
-    G10_Change_In_OSSLT_Literacy_Achievement_Over_Three_Years INT NULL,
+    G10_Percentage_Of_Students_That_Passed_The_OSSLT_On_First_Attempt NVARCHAR(6) NULL,
+    G10_Change_In_OSSLT_Literacy_Achievement_Over_Three_Years NVARCHAR(6) NULL,
     /*
         General Metrics
     */
-    Student_Enrolment INT NOT NULL DEFAULT 0,
-    Percentage_Of_Students_Whose_First_Lang_Is_Not_English DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Students_Whose_First_Lang_Is_Not_French DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Students_New_To_Canada_From_Non_English_Speaking_Country DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Students_New_To_Canada_From_Non_French_Speaking_Country DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Students_Receiving_Special_Education_Services DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Students_Identifed_As_Gifted DECIMAL(4, 1) NOT NULL,
-    Percentage_Of_Children_Who_Live_In_Low_Income_Households DECIMAL(4, 1) NULL,
-    Percentage_Of_Students_Whose_Parents_Have_Home_University_Education DECIMAL(4, 1) NULL
+    Student_Enrolment NVARCHAR(6) NULL DEFAULT 0,
+    Percentage_Of_Students_Whose_First_Lang_Is_Not_English NVARCHAR(5) NULL,
+    Percentage_Of_Students_Whose_First_Lang_Is_Not_French NVARCHAR(5) NULL,
+    Percentage_Of_Students_New_To_Canada_From_Non_English_Speaking_Country NVARCHAR(5) NULL,
+    Percentage_Of_Students_New_To_Canada_From_Non_French_Speaking_Country NVARCHAR(5) NULL,
+    Percentage_Of_Students_Receiving_Special_Education_Services NVARCHAR(5) NULL,
+    Percentage_Of_Students_Identifed_As_Gifted NVARCHAR(5) NULL,
+    Percentage_Of_Children_Who_Live_In_Low_Income_Households NVARCHAR(5) NULL,
+    Percentage_Of_Students_Whose_Parents_Have_Home_University_Education NVARCHAR(5) NULL
 )

@@ -7,7 +7,7 @@ def upload_to_staging(
     data: List[dict]
 ):
     conn_str = connector.get_connection_string_pyodbc()
-    conn = pyodbc.connect(connstring = conn_str, autocommit = True)
+    conn = pyodbc.connect(conn_str, autocommit = True)
     cursor = conn.cursor()
     sql = """
     INSERT INTO [staging].[ontario_school_demographics]
@@ -20,8 +20,8 @@ def upload_to_staging(
         School_Name,
         School_Type,
         Special_Condition_Code,
-        Level,
-        Language,
+        School_Level,
+        School_Langauge,
         Grade_Range,
         Phone_Number,
         Fax_Number,
@@ -61,8 +61,7 @@ def upload_to_staging(
         Percentage_Of_Students_Receiving_Special_Education_Services,
         Percentage_Of_Students_Identifed_As_Gifted,
         Percentage_Of_Children_Who_Live_In_Low_Income_Households,
-        Percentage_Of_Students_Whose_Parents_Have_Home_University_Education,
-        Extract Date
+        Percentage_Of_Students_Whose_Parents_Have_Home_University_Education
     )
     VALUES (<field-count>)
     """
@@ -116,12 +115,11 @@ def upload_to_staging(
         i.get("Percentage of Students Receiving Special Education Services"),
         i.get("Percentage of Students Identified as Gifted"),
         i.get("Percentage of Children Who Live in Low-Income Households"),
-        i.get("Percentage of Students Whose Parents Have Some University Education"),
-        i.get("Extract Date"),
+        i.get("Percentage of Students Whose Parents Have Some University Education")
     ) for i in data]
     param_marks = ["?" for param in params[0]]
     sql = sql.replace("<field-count>", ', '.join(param_marks))
-    cursor.fast_executemany = True
+    cursor.fast_executemany = False
     cursor.executemany(sql, params)
     cursor.close()
     conn.close()
