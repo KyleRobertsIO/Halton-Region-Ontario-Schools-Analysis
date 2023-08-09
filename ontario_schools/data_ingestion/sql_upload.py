@@ -12,6 +12,7 @@ def upload_to_staging(
     sql = """
     INSERT INTO [staging].[ontario_school_demographics]
     (
+        School_Year,
         Board_Number,
         Board_Name,
         Board_Type,
@@ -40,19 +41,19 @@ def upload_to_staging(
         G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing,
         G3_Change_In_Writing_Achievement_Over_3_Years,
         G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math,
-        G3_Change_In_Math_Achievement_Over_3_years,
+        G3_Change_In_Math_Achievement_Over_3_Years,
         G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading,
         G6_Percentage_Of_Reading_Achievement_Over_3_Years,
         G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing,
         G6_Change_In_Writing_Achievement_Over_3_Years,
         G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math,
-        G6_Change_In_Math_Achievement_Over_3_years,
+        G6_Change_In_Math_Achievement_Over_3_Years,
         G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Academic_Math,
-        G9_Change_In_Math_Achievement_Over_3_years,
+        G9_Change_In_Math_Achievement_Over_3_Years,
         G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Applied_Math,
         G9_Change_In_Applied_Math_Achievement_Over_3_Years,
         G10_Percentage_Of_Students_That_Passed_The_OSSLT_On_First_Attempt,
-        G10_Change_In_OSSLT_Literacy_Achievement_Over_Three_Years,
+        G10_Change_In_OSSLT_Literacy_Achievement_Over_3_Years,
         Student_Enrolment,
         Percentage_Of_Students_Whose_First_Lang_Is_Not_English,
         Percentage_Of_Students_Whose_First_Lang_Is_Not_French,
@@ -66,6 +67,7 @@ def upload_to_staging(
     VALUES (<field-count>)
     """
     params = [(
+        i.get("school_year"),
         i.get("Board Number"),
         i.get("Board Name"),
         i.get("Board Type"),

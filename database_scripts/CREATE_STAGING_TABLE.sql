@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS [staging].[ontario_school_demographics];
 CREATE TABLE [staging].[ontario_school_demographics] (
     Staging_Id INT IDENTITY(1,1) PRIMARY KEY,
+    School_Year NVARCHAR(9) NOT NULL,
     /*
         School Board
     */
@@ -41,7 +42,7 @@ CREATE TABLE [staging].[ontario_school_demographics] (
     G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing NVARCHAR(6),
     G3_Change_In_Writing_Achievement_Over_3_Years NVARCHAR(6) NULL,
     G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math NVARCHAR(6) NULL,
-    G3_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
+    G3_Change_In_Math_Achievement_Over_3_Years NVARCHAR(6) NULL,
     /*
         Grade 6 Metrics
     */
@@ -50,19 +51,19 @@ CREATE TABLE [staging].[ontario_school_demographics] (
     G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing NVARCHAR(6),
     G6_Change_In_Writing_Achievement_Over_3_Years NVARCHAR(6) NULL,
     G6_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math NVARCHAR(6) NULL,
-    G6_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
+    G6_Change_In_Math_Achievement_Over_3_Years NVARCHAR(6) NULL,
     /*
         Grade 9 Metrics
     */
     G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Academic_Math NVARCHAR(6) NULL,
-    G9_Change_In_Math_Achievement_Over_3_years NVARCHAR(6) NULL,
+    G9_Change_In_Math_Achievement_Over_3_Years NVARCHAR(6) NULL,
     G9_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Applied_Math NVARCHAR(6) NULL,
     G9_Change_In_Applied_Math_Achievement_Over_3_Years NVARCHAR(6) NULL,
     /*
         Grade 10 Metrics
     */
     G10_Percentage_Of_Students_That_Passed_The_OSSLT_On_First_Attempt NVARCHAR(6) NULL,
-    G10_Change_In_OSSLT_Literacy_Achievement_Over_Three_Years NVARCHAR(6) NULL,
+    G10_Change_In_OSSLT_Literacy_Achievement_Over_3_Years NVARCHAR(6) NULL,
     /*
         General Metrics
     */
@@ -74,5 +75,5 @@ CREATE TABLE [staging].[ontario_school_demographics] (
     Percentage_Of_Students_Receiving_Special_Education_Services NVARCHAR(5) NULL,
     Percentage_Of_Students_Identifed_As_Gifted NVARCHAR(5) NULL,
     Percentage_Of_Children_Who_Live_In_Low_Income_Households NVARCHAR(5) NULL,
-    Percentage_Of_Students_Whose_Parents_Have_Home_University_Education NVARCHAR(5) NULL
+    Percentage_Of_Students_Whose_Parents_Have_Some_University_Education NVARCHAR(5) NULL
 )
