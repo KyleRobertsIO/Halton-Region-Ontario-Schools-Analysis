@@ -10,6 +10,7 @@ BEGIN
             G10_Percentage_Of_Students_That_Passed_The_OSSLT_On_First_Attempt,
             G10_Change_In_OSSLT_Literacy_Achievement_Over_3_Years
         FROM [staging].[ontario_school_demographics]
+        WHERE Staging_Id = @STAGING_ID
     ) AS SRC
     ON 
         SRC.School_Year = TARGET.School_Year

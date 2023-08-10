@@ -14,6 +14,7 @@ BEGIN
             G3_Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math,
             G3_Change_In_Math_Achievement_Over_3_Years
         FROM [staging].[ontario_school_demographics]
+        WHERE Staging_Id = @STAGING_ID
     ) AS SRC
     ON 
         SRC.School_Year = TARGET.School_Year

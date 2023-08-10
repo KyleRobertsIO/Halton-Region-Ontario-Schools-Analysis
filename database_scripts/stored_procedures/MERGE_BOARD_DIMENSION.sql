@@ -10,6 +10,7 @@ BEGIN
             Board_Type,
             Board_Website
         FROM [staging].[ontario_school_demographics]
+        WHERE Staging_Id = @STAGING_ID
     ) AS SRC
     ON SRC.Board_Number = TARGET.Board_Number
     WHEN MATCHED THEN

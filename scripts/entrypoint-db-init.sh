@@ -30,3 +30,8 @@ echo "Creating staging table"
 -U ${SQL_SERVER_USERNAME} \
 -P ${SQL_SERVER_PASSWORD} \
 -d ${SQL_SERVER_DATABASE} -i/app/sql_scripts/CREATE_STAGING_TABLE.sql
+
+/opt/mssql-tools/bin/sqlcmd -S ${SQL_SERVER_HOST} \
+-U ${SQL_SERVER_USERNAME} \
+-P ${SQL_SERVER_PASSWORD} \
+-d ${SQL_SERVER_DATABASE} -i/app/sql_scripts/stored_procedures/CREATE_PROCEDURES.sql

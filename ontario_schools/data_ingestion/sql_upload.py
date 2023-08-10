@@ -62,7 +62,7 @@ def upload_to_staging(
         Percentage_Of_Students_Receiving_Special_Education_Services,
         Percentage_Of_Students_Identifed_As_Gifted,
         Percentage_Of_Children_Who_Live_In_Low_Income_Households,
-        Percentage_Of_Students_Whose_Parents_Have_Home_University_Education
+        Percentage_Of_Students_Whose_Parents_Have_Some_University_Education
     )
     VALUES (<field-count>)
     """

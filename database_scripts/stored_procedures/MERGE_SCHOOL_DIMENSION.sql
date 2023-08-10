@@ -16,6 +16,7 @@ BEGIN
             Fax_Number,
             School_Website
         FROM [staging].[ontario_school_demographics]
+        WHERE Staging_Id = @STAGING_ID
     ) AS SRC
     ON SRC.School_Number = TARGET.School_Number
     WHEN MATCHED THEN
