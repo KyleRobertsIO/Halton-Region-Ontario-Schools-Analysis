@@ -300,7 +300,16 @@ BEGIN
             Grade_Range,
             Phone_Number,
             Fax_Number,
-            School_Website
+            School_Website,
+            Building_Suite,
+            PO_Box,
+            Street_Address,
+            Municipality,
+            City,
+            Province,
+            Postal_Code,
+            Latitude,
+            Longitude
         FROM [staging].[ontario_school_demographics]
         WHERE Staging_Id = @STAGING_ID
     ) AS SRC
@@ -316,7 +325,16 @@ BEGIN
             TARGET.Grade_Range = SRC.Grade_Range,
             TARGET.Phone_Number = SRC.Phone_Number,
             TARGET.Fax_Number = SRC.Fax_Number,
-            TARGET.Website = SRC.School_Website
+            TARGET.Website = SRC.School_Website,
+            TARGET.Building_Suite = SRC.Building_Suite,
+            TARGET.PO_Box = SRC.PO_Box,
+            TARGET.Street_Address = SRC.Street_Address,
+            TARGET.Municipality = SRC.Municipality,
+            TARGET.City = SRC.City,
+            TARGET.Province = SRC.Province,
+            TARGET.Postal_Code = SRC.Postal_Code,
+            TARGET.Latitude = SRC.Latitude,
+            TARGET.Longitude = SRC.Longitude
     WHEN NOT MATCHED THEN
         INSERT
         (
@@ -329,7 +347,16 @@ BEGIN
             Grade_Range,
             Phone_Number,
             Fax_Number,
-            Website
+            Website,
+            Building_Suite,
+            PO_Box,
+            Street_Address,
+            Municipality,
+            City,
+            Province,
+            Postal_Code,
+            Latitude,
+            Longitude
         )
         VALUES
         (
@@ -342,7 +369,16 @@ BEGIN
             SRC.Grade_Range,
             SRC.Phone_Number,
             SRC.Fax_Number,
-            SRC.School_Website
+            SRC.School_Website,
+            SRC.Building_Suite,
+            SRC.PO_Box,
+            SRC.Street_Address,
+            SRC.Municipality,
+            SRC.City,
+            SRC.Province,
+            SRC.Postal_Code,
+            SRC.Latitude,
+            SRC.Longitude
         );
 END;
 GO

@@ -17,15 +17,11 @@ CREATE TABLE [dbo].[School] (
     Grade_Range NVARCHAR(4) NOT NULL,
     Phone_Number NVARCHAR(12) NULL,
     Fax_Number NVARCHAR(12) NULL,
-    Website NVARCHAR(max) NULL
-)
-
-DROP TABLE IF EXISTS [dbo].[Location];
-CREATE TABLE [dbo].[Location] (
+    Website NVARCHAR(max) NULL,
     Building_Suite NVARCHAR(50) NULL,
     PO_Box NVARCHAR(16) NULL,
     Street_Address NVARCHAR(50) NOT NULL,
-    Municipaliy NVARCHAR(50) NOT NULL,
+    Municipality NVARCHAR(50) NOT NULL,
     City NVARCHAR(50) NULL,
     Province NVARCHAR(7) NOT NULL,
     Postal_Code NVARCHAR(6) NULL,

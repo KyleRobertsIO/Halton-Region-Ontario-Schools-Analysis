@@ -33,5 +33,13 @@ RUN chmod +x /wait
 # Set permissions for docker-entrypoint-db.sh
 RUN chmod +x /app/entrypoint-db-init.sh
 
+# Copy data ingestion process
+COPY ./ontario_schools.py ./ontario_schools.py
+COPY ./ontario_schools ./ontario_schools
+COPY ./requirements.txt ./requirements.txt
+COPY ./data_cache ./data_cache
+
+RUN pip install -r requirements.txt
+
 # Run the command on container startup
 ENTRYPOINT ["./entrypoint-db-init.sh"]
