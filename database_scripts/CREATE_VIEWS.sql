@@ -8,7 +8,7 @@ WITH CTE_VALID_PERCENTAGES
 AS (
     SELECT 
         star.School_Year,
-        s.Name,
+        CONCAT(Name, ' - ', Level, ' - ', City) AS School,
         [staging].[UDF_PERCENTAGE_CLEAN_UP](
             g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading
         ) Percentage_Achieving_The_Provincial_Standard
@@ -25,7 +25,7 @@ AS (
 SELECT
     'Reading' Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM CTE_VALID_PERCENTAGES
 WHERE 
@@ -41,7 +41,7 @@ WITH CTE_VALID_PERCENTAGES
 AS (
     SELECT 
         star.School_Year,
-        s.Name,
+        CONCAT(Name, ' - ', Level, ' - ', City) AS School,
         [staging].[UDF_PERCENTAGE_CLEAN_UP](
             g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing
         ) Percentage_Achieving_The_Provincial_Standard
@@ -58,7 +58,7 @@ AS (
 SELECT
     'Writing' Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM CTE_VALID_PERCENTAGES
 WHERE 
@@ -74,7 +74,7 @@ WITH CTE_VALID_PERCENTAGES
 AS (
     SELECT 
         star.School_Year,
-        s.Name,
+        CONCAT(Name, ' - ', Level, ' - ', City) AS School,
         [staging].[UDF_PERCENTAGE_CLEAN_UP](
             g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math
         ) Percentage_Achieving_The_Provincial_Standard
@@ -91,7 +91,7 @@ AS (
 SELECT
     'Math' Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM CTE_VALID_PERCENTAGES
 WHERE 
@@ -106,20 +106,20 @@ AS
 SELECT
     Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM [dbo].[Grade_3_School_Math_Skill_Passing_Standard_Percentages]
 UNION
 SELECT
     Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM [dbo].[Grade_3_School_Reading_Skill_Passing_Standard_Percentages]
 UNION
 SELECT
     Skill,
     School_Year,
-    Name,
+    School,
     Percentage_Achieving_The_Provincial_Standard
 FROM [dbo].[Grade_3_School_Writing_Skill_Passing_Standard_Percentages]

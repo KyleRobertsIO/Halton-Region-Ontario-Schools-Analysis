@@ -20,13 +20,13 @@ CREATE TABLE [dbo].[School] (
     Website NVARCHAR(max) NULL,
     Building_Suite NVARCHAR(50) NULL,
     PO_Box NVARCHAR(16) NULL,
-    Street_Address NVARCHAR(50) NOT NULL,
-    Municipality NVARCHAR(50) NOT NULL,
+    Street_Address NVARCHAR(50) NULL,
+    Municipality NVARCHAR(50) NULL,
     City NVARCHAR(50) NULL,
-    Province NVARCHAR(7) NOT NULL,
+    Province NVARCHAR(7) NULL,
     Postal_Code NVARCHAR(6) NULL,
-    Latitude DECIMAL(14, 12) NOT NULL,
-    Longitude DECIMAL(14, 12) NOT NULL
+    Latitude DECIMAL(14, 12) NULL,
+    Longitude DECIMAL(14, 12) NULL
 )
 
 DROP TABLE IF EXISTS [dbo].[Grade_3_Metrics];
