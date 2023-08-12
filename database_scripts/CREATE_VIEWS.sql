@@ -349,6 +349,7 @@ AS (
     SELECT
         b.Name AS Board_Name,
         s.Name AS School_Name,
+        star.School_Year,
         'Math' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
@@ -370,12 +371,14 @@ AS (
 CTE_BOARD_MATH_RESULT_AVERAGES AS (
     SELECT
         Board_Name,
+        School_Year,
         Skill,
         AVG(Percentage_Achieving_The_Provincial_Standard) AS Average_Percentage_Achieving_The_Provincial_Standard
     FROM CTE_SCHOOL_GRADE_3_MATH_RESULTS
     WHERE Percentage_Achieving_The_Provincial_Standard IS NOT NULL
     GROUP BY
         Board_Name,
+        School_Year,
         Skill
 ),
 CTE_SCHOOLS_INVOLVED AS (
@@ -387,6 +390,7 @@ CTE_SCHOOLS_INVOLVED AS (
 )
 SELECT
     bma.Board_Name,
+    bma.School_Year,
     bma.Skill,
     bma.Average_Percentage_Achieving_The_Provincial_Standard,
     si.Total_Involved_Schools
@@ -404,6 +408,7 @@ AS (
     SELECT
         b.Name AS Board_Name,
         s.Name AS School_Name,
+        star.School_Year,
         'Reading' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
@@ -425,12 +430,14 @@ AS (
 CTE_BOARD_READING_RESULT_AVERAGES AS (
     SELECT
         Board_Name,
+        School_Year,
         Skill,
         AVG(Percentage_Achieving_The_Provincial_Standard) AS Average_Percentage_Achieving_The_Provincial_Standard
     FROM CTE_SCHOOL_GRADE_3_READING_RESULTS
     WHERE Percentage_Achieving_The_Provincial_Standard IS NOT NULL
     GROUP BY
         Board_Name,
+        School_Year,
         Skill
 ),
 CTE_SCHOOLS_INVOLVED AS (
@@ -442,6 +449,7 @@ CTE_SCHOOLS_INVOLVED AS (
 )
 SELECT
     bma.Board_Name,
+    bma.School_Year,
     bma.Skill,
     bma.Average_Percentage_Achieving_The_Provincial_Standard,
     si.Total_Involved_Schools
@@ -459,6 +467,7 @@ AS (
     SELECT
         b.Name AS Board_Name,
         s.Name AS School_Name,
+        star.School_Year,
         'Writing' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
@@ -480,12 +489,14 @@ AS (
 CTE_BOARD_WRITING_RESULT_AVERAGES AS (
     SELECT
         Board_Name,
+        School_Year,
         Skill,
         AVG(Percentage_Achieving_The_Provincial_Standard) AS Average_Percentage_Achieving_The_Provincial_Standard
     FROM CTE_SCHOOL_GRADE_3_WRITING_RESULTS
     WHERE Percentage_Achieving_The_Provincial_Standard IS NOT NULL
     GROUP BY
         Board_Name,
+        School_Year,
         Skill
 ),
 CTE_SCHOOLS_INVOLVED AS (
@@ -497,6 +508,7 @@ CTE_SCHOOLS_INVOLVED AS (
 )
 SELECT
     bma.Board_Name,
+    bma.School_Year,
     bma.Skill,
     bma.Average_Percentage_Achieving_The_Provincial_Standard,
     si.Total_Involved_Schools
@@ -511,6 +523,7 @@ AS
 
 SELECT
     Board_Name,
+    School_Year,
     Skill,
     Average_Percentage_Achieving_The_Provincial_Standard,
     Total_Involved_Schools
@@ -518,6 +531,7 @@ FROM [dbo].[Board_Grade_3_Writing_Skill_Average]
 UNION
 SELECT
     Board_Name,
+    School_Year,
     Skill,
     Average_Percentage_Achieving_The_Provincial_Standard,
     Total_Involved_Schools
@@ -525,6 +539,7 @@ FROM [dbo].[Board_Grade_3_Reading_Skill_Average]
 UNION
 SELECT
     Board_Name,
+    School_Year,
     Skill,
     Average_Percentage_Achieving_The_Provincial_Standard,
     Total_Involved_Schools
