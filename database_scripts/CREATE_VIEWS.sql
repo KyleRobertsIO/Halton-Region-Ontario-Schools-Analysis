@@ -563,7 +563,7 @@ AS (
         'Math' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
-                g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math
+                g6m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Math
             ) AS DECIMAL(5, 2)
         ) AS Percentage_Achieving_The_Provincial_Standard 
     FROM [dbo].[Star] star
@@ -573,10 +573,10 @@ AS (
     JOIN [dbo].[School] s
     ON
         star.School_Number = s.School_Number
-    JOIN [dbo].[Grade_6_Metrics] g3m
+    JOIN [dbo].[Grade_6_Metrics] g6m
     ON
-        star.School_Year = g3m.School_Year
-        AND star.School_Number = g3m.School_Number
+        star.School_Year = g6m.School_Year
+        AND star.School_Number = g6m.School_Number
 ),
 CTE_BOARD_MATH_RESULT_AVERAGES AS (
     SELECT
@@ -622,7 +622,7 @@ AS (
         'Reading' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
-                g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading
+                g6m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Reading
             ) AS DECIMAL(5, 2)
         ) AS Percentage_Achieving_The_Provincial_Standard 
     FROM [dbo].[Star] star
@@ -632,10 +632,10 @@ AS (
     JOIN [dbo].[School] s
     ON
         star.School_Number = s.School_Number
-    JOIN [dbo].[Grade_6_Metrics] g3m
+    JOIN [dbo].[Grade_6_Metrics] g6m
     ON
-        star.School_Year = g3m.School_Year
-        AND star.School_Number = g3m.School_Number
+        star.School_Year = g6m.School_Year
+        AND star.School_Number = g6m.School_Number
 ),
 CTE_BOARD_READING_RESULT_AVERAGES AS (
     SELECT
@@ -681,7 +681,7 @@ AS (
         'Writing' AS Skill,
         CAST(
             [staging].[UDF_PERCENTAGE_CLEAN_UP](
-                g3m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing
+                g6m.Percentage_Of_Students_Achieving_The_Provincial_Standard_In_Writing
             ) AS DECIMAL(5, 2)
         ) AS Percentage_Achieving_The_Provincial_Standard 
     FROM [dbo].[Star] star
@@ -691,10 +691,10 @@ AS (
     JOIN [dbo].[School] s
     ON
         star.School_Number = s.School_Number
-    JOIN [dbo].[Grade_6_Metrics] g3m
+    JOIN [dbo].[Grade_6_Metrics] g6m
     ON
-        star.School_Year = g3m.School_Year
-        AND star.School_Number = g3m.School_Number
+        star.School_Year = g6m.School_Year
+        AND star.School_Number = g6m.School_Number
 ),
 CTE_BOARD_WRITING_RESULT_AVERAGES AS (
     SELECT
@@ -755,7 +755,6 @@ SELECT
     Total_Involved_Schools
 FROM [dbo].[Board_Grade_6_Math_Skill_Average]
 GO
-
 /*************************************************
     Board Based Grade 9 Math Skills Passing 
     Province Standard
