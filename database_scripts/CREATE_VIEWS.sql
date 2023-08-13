@@ -1070,6 +1070,61 @@ GROUP BY
     Type
 GO
 
+CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR_Not_First_Langauge_Percentages]
+AS
+
+WITH CTE_SCHOOLS_ENGLISH_NOT_FIRST_LANGUAGE
+AS (
+    SELECT
+        star.School_Year,
+        s.Name AS School_Name,
+        [staging].[UDF_PERCENTAGE_CLEAN_UP](
+            lm.Percentage_Of_Students_Whose_First_Lang_Is_Not_English
+        ) AS Percentage_Not_First_Langauge
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Language_Metrics] lm
+    ON
+        star.School_Number = lm.School_Number
+        AND star.School_Year = lm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+),
+CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE AS (
+    SELECT
+        star.School_Year,
+        s.Name AS School_Name,
+        [staging].[UDF_PERCENTAGE_CLEAN_UP](
+            lm.Percentage_Of_Students_Whose_First_Lang_Is_Not_French
+        ) AS Percentage_Not_First_Langauge
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Language_Metrics] lm
+    ON
+        star.School_Number = lm.School_Number
+        AND star.School_Year = lm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+)
+SELECT
+    School_Year,
+    School_Name,
+    'English' AS Language,
+    Percentage_Not_First_Langauge
+FROM CTE_SCHOOLS_ENGLISH_NOT_FIRST_LANGUAGE
+WHERE 
+    Percentage_Not_First_Langauge IS NOT NULL
+UNION
+SELECT
+    School_Year,
+    School_Name,
+    'French' AS Language,
+    Percentage_Not_First_Langauge
+FROM CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE
+WHERE 
+    Percentage_Not_First_Langauge IS NOT NULL
+GO
+    
 CREATE OR ALTER VIEW [dbo].[Schools_English_Not_First_Lanague_Involvement]
 AS
 
