@@ -1091,7 +1091,7 @@ AS (
 SELECT
     School_Year,
     Involvement_Status,
-    COUNT(*) AS Involed
+    COUNT(*) AS Involved
 FROM CTE_RESULT_INVOLVEMENT
 GROUP BY
     School_Year,
@@ -1119,7 +1119,7 @@ AS (
 SELECT
     School_Year,
     Involvement_Status,
-    COUNT(*) AS Involed
+    COUNT(*) AS Involved
 FROM CTE_RESULT_INVOLVEMENT
 GROUP BY
     School_Year,
