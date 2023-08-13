@@ -897,3 +897,70 @@ SELECT
     Total_Involved_Schools
 FROM [dbo].[Board_Grade_9_Academic_Math_Skill_Average]
 GO
+
+/*************************************************
+    Board Based Student Metrics
+*************************************************/
+
+CREATE OR ALTER VIEW [dbo].[Board_Student_Enrolment]
+AS
+
+WITH CTE_SCHOOL_ENROLMENT
+AS (
+    SELECT
+        b.Name AS Board_Name,
+        s.Name AS School_Name,
+        s.Grade_Range,
+        sm.School_Year,
+        CAST(sm.Student_Enrolment AS INT) AS Student_Enrolment
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Board] b
+    ON
+        star.Board_Number = b.Board_Number
+    JOIN [dbo].[Student_Metrics] sm
+    ON
+        star.School_Number = sm.School_Number
+        AND star.School_Year = sm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE
+        sm.Student_Enrolment != 'NA'
+),
+CTE_SCHOOLS_PER_BOARD AS (
+    SELECT
+        Board_Name,
+        Grade_Range,
+        COUNT(*) AS Schools_In_Board
+    FROM CTE_SCHOOL_ENROLMENT
+    GROUP BY
+        Board_Name,
+        Grade_Range
+),
+CTE_BOARD_ENROLMENT AS (
+    SELECT
+        Board_Name,
+        School_Year,
+        Grade_Range,
+        SUM(Student_Enrolment) AS Student_Enrolment
+    FROM CTE_SCHOOL_ENROLMENT
+    GROUP BY
+        Board_Name,
+        School_Year,
+        Grade_Range
+)
+SELECT
+    be.Board_Name,
+    be.School_Year,
+    be.Student_Enrolment,
+    be.Grade_Range,
+    spb.Schools_In_Board,
+    ROUND(
+        (be.Student_Enrolment / spb.Schools_In_Board),
+        0
+    ) AS Mean_School_Enrolment
+FROM CTE_BOARD_ENROLMENT be
+JOIN CTE_SCHOOLS_PER_BOARD spb
+ON
+    be.Board_Name = spb.Board_Name
+    AND be.Grade_Range = spb.Grade_Range
