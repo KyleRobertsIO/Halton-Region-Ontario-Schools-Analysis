@@ -910,6 +910,7 @@ AS (
     SELECT
         b.Name AS Board_Name,
         s.Name AS School_Name,
+        s.Level AS School_Type,
         s.Grade_Range,
         sm.School_Year,
         CAST(sm.Student_Enrolment AS INT) AS Student_Enrolment
@@ -941,18 +942,21 @@ CTE_BOARD_ENROLMENT AS (
     SELECT
         Board_Name,
         School_Year,
+        School_Type,
         Grade_Range,
         SUM(Student_Enrolment) AS Student_Enrolment
     FROM CTE_SCHOOL_ENROLMENT
     GROUP BY
         Board_Name,
         School_Year,
+        School_Type,
         Grade_Range
 ),
 CTE_MEAN_SCHOOL_ENROLMENT AS (
     SELECT
         be.Board_Name,
         be.School_Year,
+        be.School_Type,
         be.Student_Enrolment,
         be.Grade_Range,
         [dbo].[Grade_Count](be.Grade_Range) AS Grades_To_Manage,
@@ -970,6 +974,7 @@ CTE_MEAN_SCHOOL_ENROLMENT AS (
 SELECT
     Board_Name,
     School_Year,
+    School_Type,
     Student_Enrolment,
     Grade_Range,
     Grades_To_Manage,
