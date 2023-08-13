@@ -1125,3 +1125,21 @@ GROUP BY
     School_Year,
     Involvement_Status
 GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR Not_First_Language]
+AS
+
+SELECT
+    School_Year,
+    'English' AS Not_First_Langauge,
+    Involvement_Status,
+    Involved
+FROM [dbo].[Schools_English_Not_First_Lanague_Involvement]
+UNION
+SELECT
+    School_Year,
+    'French' AS Not_First_Langauge,
+    Involvement_Status,
+    Involved
+FROM [dbo].[Schools_French_Not_First_Lanague_Involvement]
+GO
