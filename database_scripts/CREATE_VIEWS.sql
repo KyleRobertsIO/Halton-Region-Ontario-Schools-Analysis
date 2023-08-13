@@ -985,3 +985,52 @@ SELECT
         0
     ) AS Mean_Grade_Size
 FROM CTE_MEAN_SCHOOL_ENROLMENT
+GO
+
+CREATE OR ALTER VIEW [dbo].[Board_Student_Enrolment_Share_By_Level]
+AS
+
+WITH CTE_ELEMENTARY_SCHOOL_ENROLMENT
+AS (
+    SELECT
+        Board_Name,
+        School_Type,
+        SUM(Student_Enrolment) AS Enrolment
+    FROM [dbo].[Board_Student_Enrolment]
+    WHERE
+        School_Type = 'Elementary'
+    GROUP BY
+        Board_Name,
+        School_Type
+),
+CTE_SECONDARY_SCHOOL_ENROLMENT AS (
+    SELECT
+        Board_Name,
+        School_Type,
+        SUM(Student_Enrolment) AS Enrolment
+    FROM [dbo].[Board_Student_Enrolment]
+    WHERE
+        School_Type = 'Secondary'
+    GROUP BY
+        Board_Name,
+        School_Type
+),
+CTE_JOINED_ENROLMENTS AS (
+    SELECT
+        e.Board_Name,
+        e.Enrolment AS Elementary_Enrolment,
+        s.Enrolment AS Secondary_Enrolment,
+        (e.Enrolment + s.Enrolment) AS Total_Enrolment
+    FROM CTE_ELEMENTARY_SCHOOL_ENROLMENT e
+    JOIN CTE_SECONDARY_SCHOOL_ENROLMENT s
+    ON
+        e.Board_Name = s.Board_Name
+)
+SELECT
+    Board_Name,
+    Elementary_Enrolment,
+    Secondary_Enrolment,
+    (CAST(Elementary_Enrolment AS FLOAT)/CAST(Total_Enrolment AS FLOAT) * 100) AS Elementary_Percentage,
+    (CAST(Secondary_Enrolment AS FLOAT)/CAST(Total_Enrolment AS FLOAT) * 100) AS Secondary_Percentage
+FROM CTE_JOINED_ENROLMENTS
+GO
