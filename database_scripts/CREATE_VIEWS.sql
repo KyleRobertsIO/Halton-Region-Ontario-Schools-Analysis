@@ -1069,3 +1069,31 @@ GROUP BY
     School_Year,
     Type
 GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_English_Not_First_Lanague_Involvement]
+AS
+
+WITH CTE_RESULT_INVOLVEMENT
+AS (
+    SELECT
+        star.School_Year,
+        Involvement_Status = CASE lm.Percentage_Of_Students_Whose_First_Lang_Is_Not_English
+            WHEN 'SP' THEN 'Suppressed'
+            WHEN 'NA' THEN 'Not Available'
+            ELSE 'Recorded'
+        END
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Language_Metrics] lm
+    ON
+        star.School_Number = lm.School_Number
+        AND star.School_Year = lm.School_Year
+)
+SELECT
+    School_Year,
+    Involvement_Status,
+    COUNT(*) AS Involed
+FROM CTE_RESULT_INVOLVEMENT
+GROUP BY
+    School_Year,
+    Involvement_Status
+GO
