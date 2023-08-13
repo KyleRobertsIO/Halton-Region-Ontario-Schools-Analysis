@@ -948,19 +948,35 @@ CTE_BOARD_ENROLMENT AS (
         Board_Name,
         School_Year,
         Grade_Range
+),
+CTE_MEAN_SCHOOL_ENROLMENT AS (
+    SELECT
+        be.Board_Name,
+        be.School_Year,
+        be.Student_Enrolment,
+        be.Grade_Range,
+        [dbo].[Grade_Count](be.Grade_Range) AS Grades_To_Manage,
+        spb.Schools_In_Board,
+        ROUND(
+            (be.Student_Enrolment / spb.Schools_In_Board),
+            0
+        ) AS Mean_School_Enrolment
+    FROM CTE_BOARD_ENROLMENT be
+    JOIN CTE_SCHOOLS_PER_BOARD spb
+    ON
+        be.Board_Name = spb.Board_Name
+        AND be.Grade_Range = spb.Grade_Range
 )
 SELECT
-    be.Board_Name,
-    be.School_Year,
-    be.Student_Enrolment,
-    be.Grade_Range,
-    spb.Schools_In_Board,
+    Board_Name,
+    School_Year,
+    Student_Enrolment,
+    Grade_Range,
+    Grades_To_Manage,
+    Schools_In_Board,
+    Mean_School_Enrolment,
     ROUND(
-        (be.Student_Enrolment / spb.Schools_In_Board),
+        (Mean_School_Enrolment / Grades_To_Manage),
         0
-    ) AS Mean_School_Enrolment
-FROM CTE_BOARD_ENROLMENT be
-JOIN CTE_SCHOOLS_PER_BOARD spb
-ON
-    be.Board_Name = spb.Board_Name
-    AND be.Grade_Range = spb.Grade_Range
+    ) AS Mean_Grade_Size
+FROM CTE_MEAN_SCHOOL_ENROLMENT
