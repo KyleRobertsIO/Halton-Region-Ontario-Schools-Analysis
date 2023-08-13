@@ -1034,3 +1034,38 @@ SELECT
     (CAST(Secondary_Enrolment AS FLOAT)/CAST(Total_Enrolment AS FLOAT) * 100) AS Secondary_Percentage
 FROM CTE_JOINED_ENROLMENTS
 GO
+
+/*************************************************
+    School Based Student Metrics
+*************************************************/
+
+CREATE OR ALTER VIEW [dbo].[School_Type_Enrolment]
+AS
+
+WITH CTE_SCHOOL_TYPE_POPULATION
+AS (
+    SELECT
+        star.School_Year,
+        s.Name,
+        s.Type,
+        CAST(sm.Student_Enrolment AS INT) AS Student_Enrolment
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    JOIN [dbo].[Student_Metrics] sm
+    ON
+        star.School_Year = sm.School_Year
+        AND star.School_Number = sm.School_Number
+    WHERE 
+        Student_Enrolment != 'NA'
+)
+SELECT
+    School_Year,
+    Type,
+    SUM(Student_Enrolment) AS Total_Students
+FROM CTE_SCHOOL_TYPE_POPULATION
+GROUP BY
+    School_Year,
+    Type
+GO
