@@ -1342,3 +1342,59 @@ FROM [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Per
 JOIN CTE_STUDENT_ENROLMENT_BY_SCHOOL sebs
 ON
     enc.School_Name = sebs.School_Name
+GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Enrolment_Count_With_Geo_Classification]
+AS
+
+WITH CTE_NORTHERN_SCHOOLS
+AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude > 45.3739621 -- North of Parry Sound
+),
+CTE_SOUTHERN_SCHOOLS AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude < 45.3739621 -- North of Parry Sound
+),
+CTE_SCHOOL_GEO_CLASSIFICATION AS (
+    SELECT
+        School_Year,
+        School,
+        'Northern' AS Geo_Classification
+    FROM CTE_NORTHERN_SCHOOLS
+    UNION
+    SELECT
+        School_Year,
+        School,
+        'Southern' AS Geo_Classification
+    FROM CTE_SOUTHERN_SCHOOLS
+)
+SELECT
+    ncsec.School_Year,
+    ncsec.Board_Name,
+    ncsec.School_Name,
+    ncsec.School_Level,
+    sgc.Geo_Classification,
+    ncsec.City,
+    ncsec.Language,
+    ncsec.Student_Enrolment,
+    ncsec.Percentage_New_To_Canada_From_Non_English_Speaking_Country,
+    ncsec.Enrolment_New_To_Canada
+FROM [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Enrolment_Count] ncsec
+JOIN CTE_SCHOOL_GEO_CLASSIFICATION sgc
+ON
+    ncsec.School_Year = sgc.School_Year
+    AND ncsec.School_Name = sgc.School
+GO
