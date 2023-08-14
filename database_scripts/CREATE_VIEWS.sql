@@ -1,3 +1,40 @@
+CREATE OR ALTER VIEW [dbo].[Geo_Classified_Schools]
+AS
+
+WITH CTE_NORTHERN_SCHOOLS
+AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude > 45.3739621 -- North of Parry Sound
+),
+CTE_SOUTHERN_SCHOOLS AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude < 45.3739621 -- North of Parry Sound
+)
+SELECT
+    School_Year,
+    School,
+    'Northern' AS Geo_Classification
+FROM CTE_NORTHERN_SCHOOLS
+UNION
+SELECT
+    School_Year,
+    School,
+    'Southern' AS Geo_Classification
+FROM CTE_SOUTHERN_SCHOOLS
+GO
+
 /*************************************************
     Grade 3 Skills Passing Province Standard
 *************************************************/
@@ -1334,7 +1371,7 @@ SELECT
     enc.Percentage_New_To_Canada_From_Non_English_Speaking_Country,
     CAST(
         ROUND(
-        (sebs.Student_Enrolment / 100 * enc.Percentage_New_To_Canada_From_Non_English_Speaking_Country),
+        (CAST(sebs.Student_Enrolment AS FLOAT) / 100 * enc.Percentage_New_To_Canada_From_Non_English_Speaking_Country),
         0
     ) AS INT
     ) AS Enrolment_New_To_Canada
@@ -1397,4 +1434,65 @@ JOIN CTE_SCHOOL_GEO_CLASSIFICATION sgc
 ON
     ncsec.School_Year = sgc.School_Year
     AND ncsec.School_Name = sgc.School
+GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_Students_Living_In_Low_Income_Households]
+AS
+
+WITH CTE_SCHOOL_CHILDREN_WHO_LIVE_IN_LOW_INCOME_HOUSEHOLDS
+AS (
+    SELECT
+        star.School_Year,
+        b.Name AS Board_Name,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School_Name,
+        s.City,
+        [staging].[UDF_PERCENTAGE_CLEAN_UP] (
+            sm.Percentage_Of_Children_Who_Live_In_Low_Income_Households
+        ) AS Percentage_Of_Children_Who_Live_In_Low_Income_Households,
+        sm.Student_Enrolment
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Student_Metrics] sm
+    ON
+        star.School_Number = sm.School_Number
+        AND star.School_Year = sm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    JOIN [dbo].[Board] b
+    ON
+        star.Board_Number = b.Board_Number
+),
+CTE_CTE_SCHOOL_CHILDREN_WHO_LIVE_IN_LOW_INCOME_HOUSEHOLDS_NO_NULLS AS (
+    SELECT
+        School_Year,
+        Board_Name,
+        School_Name,
+        City,
+        Percentage_Of_Children_Who_Live_In_Low_Income_Households,
+        Student_Enrolment,
+        CAST(
+            ROUND(
+                ((CAST(Student_Enrolment AS FLOAT) / 100) * Percentage_Of_Children_Who_Live_In_Low_Income_Households),
+                2
+            ) AS INT
+        ) AS Student_Enrolment_In_Low_Income_Households
+    FROM CTE_SCHOOL_CHILDREN_WHO_LIVE_IN_LOW_INCOME_HOUSEHOLDS
+    WHERE
+        Percentage_Of_Children_Who_Live_In_Low_Income_Households IS NOT NULL
+        AND Student_Enrolment != 'NA'
+)
+SELECT
+    slillh.School_Year,
+    slillh.Board_Name,
+    slillh.School_Name,
+    slillh.City,
+    gcs.Geo_Classification,
+    slillh.Percentage_Of_Children_Who_Live_In_Low_Income_Households,
+    slillh.Student_Enrolment,
+    slillh.Student_Enrolment_In_Low_Income_Households
+FROM CTE_CTE_SCHOOL_CHILDREN_WHO_LIVE_IN_LOW_INCOME_HOUSEHOLDS_NO_NULLS slillh
+JOIN [dbo].[Geo_Classified_Schools] gcs
+ON
+    slillh.School_Year = gcs.School_Year
+    AND slillh.School_Name = gcs.School
 GO
