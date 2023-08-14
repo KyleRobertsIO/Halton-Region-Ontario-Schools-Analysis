@@ -1189,6 +1189,8 @@ FROM CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE
 WHERE 
     Percentage_Not_First_Language IS NOT NULL
 GO
+
+
 CREATE OR ALTER VIEW [dbo].[Schools_English_Not_First_Lanague_Involvement]
 AS
 
@@ -1262,3 +1264,81 @@ SELECT
     Involved
 FROM [dbo].[Schools_French_Not_First_Lanague_Involvement]
 GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Percentages]
+AS
+
+WITH CTE_SCHOOLS_STUDENTS_NEW_TO_CANADA_FROM_NON_ENGLISH_SPEAKING_COUNTRY
+AS (
+    SELECT
+        star.School_Year,
+        b.Name AS Board_Name,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School_Name,
+        s.Level AS School_Level,
+        s.City,
+        [staging].[UDF_PERCENTAGE_CLEAN_UP](
+            lm.Percentage_Of_Students_New_To_Canada_From_Non_English_Speaking_Country
+        ) AS Percentage_New_To_Canada_From_Non_English_Speaking_Country
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Language_Metrics] lm
+    ON
+        star.School_Number = lm.School_Number
+        AND star.School_Year = lm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    JOIN [dbo].[Board] b
+    ON
+        star.Board_Number = b.Board_Number
+)
+SELECT
+    School_Year,
+    Board_Name,
+    School_Name,
+    School_Level,
+    City,
+    'English' AS Language,
+    Percentage_New_To_Canada_From_Non_English_Speaking_Country
+FROM CTE_SCHOOLS_STUDENTS_NEW_TO_CANADA_FROM_NON_ENGLISH_SPEAKING_COUNTRY
+WHERE 
+    Percentage_New_To_Canada_From_Non_English_Speaking_Country IS NOT NULL
+GO
+
+CREATE OR ALTER VIEW [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Enrolment_Count]
+AS
+
+WITH CTE_STUDENT_ENROLMENT_BY_SCHOOL
+AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School_Name,
+        sm.Student_Enrolment
+    FROM [dbo].[Star] star
+    JOIN [dbo].[Student_Metrics] sm
+    ON
+        star.School_Number = sm.School_Number
+        AND star.School_Year = sm.School_Year
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE sm.Student_Enrolment != 'NA'
+)
+SELECT
+    enc.School_Year,
+    enc.Board_Name,
+    enc.School_Name,
+    enc.School_Level,
+    enc.City,
+    enc.Language,
+    sebs.Student_Enrolment,
+    enc.Percentage_New_To_Canada_From_Non_English_Speaking_Country,
+    CAST(
+        ROUND(
+        (sebs.Student_Enrolment / 100 * enc.Percentage_New_To_Canada_From_Non_English_Speaking_Country),
+        0
+    ) AS INT
+    ) AS Enrolment_New_To_Canada
+FROM [dbo].[Schools_Students_New_To_Canada_Not_From_English_Speaking_Country_Percentages] enc
+JOIN CTE_STUDENT_ENROLMENT_BY_SCHOOL sebs
+ON
+    enc.School_Name = sebs.School_Name
