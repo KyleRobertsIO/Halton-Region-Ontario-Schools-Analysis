@@ -192,8 +192,6 @@ WHERE
     Percentage_Achieving_The_Provincial_Standard IS NOT NULL
 GO
 
-------------------------------------
-
 CREATE OR ALTER VIEW [dbo].[Grade_6_School_Math_Skill_Passing_Standard_Percentages]
 AS
 
@@ -225,8 +223,6 @@ WHERE
     Percentage_Achieving_The_Provincial_Standard IS NOT NULL
 GO
 
-------------------------------------
-
 CREATE OR ALTER VIEW [dbo].[Grade_6_School_Skills_Passing_Standard_Percentages]
 AS
 
@@ -250,6 +246,71 @@ SELECT
     School,
     Percentage_Achieving_The_Provincial_Standard
 FROM [dbo].[Grade_6_School_Writing_Skill_Passing_Standard_Percentages]
+
+CREATE OR ALTER VIEW [dbo].[Grade_6_School_Skills_Passing_Standard_Percentages_Geo_Classification]
+AS
+
+WITH CTE_NORTHERN_SCHOOLS
+AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude > 44.419600000000
+),
+CTE_NORTHERN_SCHOOLS_SKILLS AS (
+    SELECT
+        ns.School_Year,
+        ns.School,
+        g6s.Skill,
+        g6s.Percentage_Achieving_The_Provincial_Standard
+    FROM CTE_NORTHERN_SCHOOLS ns
+    JOIN [dbo].[Grade_6_School_Skills_Passing_Standard_Percentages] g6s
+    ON
+        ns.School_Year = g6s.School_Year
+        AND ns.School = g6s.School
+),
+CTE_SOUTHERN_SCHOOLS AS (
+    SELECT
+        star.School_Year,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School
+    FROM [dbo].[Star] star
+    JOIN [dbo].[School] s
+    ON
+        star.School_Number = s.School_Number
+    WHERE Latitude < 44.419600000000
+),
+CTE_SOUTHERN_SCHOOLS_SKILLS AS (
+    SELECT
+        ss.School_Year,
+        ss.School,
+        g6s.Skill,
+        g6s.Percentage_Achieving_The_Provincial_Standard
+    FROM CTE_SOUTHERN_SCHOOLS ss
+    JOIN [dbo].[Grade_6_School_Skills_Passing_Standard_Percentages] g6s
+    ON
+        ss.School_Year = g6s.School_Year
+        AND ss.School = g6s.School
+)
+SELECT
+    School_Year,
+    'Northern' AS Geo_Classification,
+    School,
+    Skill,
+    Percentage_Achieving_The_Provincial_Standard
+FROM CTE_NORTHERN_SCHOOLS_SKILLS
+UNION
+SELECT
+    School_Year,
+    'Southern' AS Geo_Classification,
+    School,
+    Skill,
+    Percentage_Achieving_The_Provincial_Standard
+FROM CTE_SOUTHERN_SCHOOLS_SKILLS
+GO
 
 /*************************************************
     Grade 9 Math Skills Passing Province Standard
