@@ -1070,17 +1070,18 @@ GROUP BY
     Type
 GO
 
-CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR_Not_First_Langauge_Percentages]
+CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR_Not_First_Language_Percentages]
 AS
 
 WITH CTE_SCHOOLS_ENGLISH_NOT_FIRST_LANGUAGE
 AS (
     SELECT
         star.School_Year,
-        s.Name AS School_Name,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School_Name,
+        s.Level AS School_Level,
         [staging].[UDF_PERCENTAGE_CLEAN_UP](
             lm.Percentage_Of_Students_Whose_First_Lang_Is_Not_English
-        ) AS Percentage_Not_First_Langauge
+        ) AS Percentage_Not_First_Language
     FROM [dbo].[Star] star
     JOIN [dbo].[Language_Metrics] lm
     ON
@@ -1093,10 +1094,11 @@ AS (
 CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE AS (
     SELECT
         star.School_Year,
-        s.Name AS School_Name,
+        CONCAT(s.Name, ' - ', s.Level, ' - ', s.City) AS School_Name,
+        s.Level AS School_Level,
         [staging].[UDF_PERCENTAGE_CLEAN_UP](
             lm.Percentage_Of_Students_Whose_First_Lang_Is_Not_French
-        ) AS Percentage_Not_First_Langauge
+        ) AS Percentage_Not_First_Language
     FROM [dbo].[Star] star
     JOIN [dbo].[Language_Metrics] lm
     ON
@@ -1109,22 +1111,23 @@ CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE AS (
 SELECT
     School_Year,
     School_Name,
+    School_Level,
     'English' AS Language,
-    Percentage_Not_First_Langauge
+    Percentage_Not_First_Language
 FROM CTE_SCHOOLS_ENGLISH_NOT_FIRST_LANGUAGE
 WHERE 
-    Percentage_Not_First_Langauge IS NOT NULL
+    Percentage_Not_First_Language IS NOT NULL
 UNION
 SELECT
     School_Year,
     School_Name,
+    School_Level,
     'French' AS Language,
-    Percentage_Not_First_Langauge
+    Percentage_Not_First_Language
 FROM CTE_SCHOOLS_FRENCH_NOT_FIRST_LANGUAGE
 WHERE 
-    Percentage_Not_First_Langauge IS NOT NULL
+    Percentage_Not_First_Language IS NOT NULL
 GO
-    
 CREATE OR ALTER VIEW [dbo].[Schools_English_Not_First_Lanague_Involvement]
 AS
 
@@ -1181,7 +1184,7 @@ GROUP BY
     Involvement_Status
 GO
 
-CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR Not_First_Language]
+CREATE OR ALTER VIEW [dbo].[Schools_EN_Or_FR_Not_First_Language]
 AS
 
 SELECT
