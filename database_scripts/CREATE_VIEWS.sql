@@ -259,7 +259,7 @@ AS (
     JOIN [dbo].[School] s
     ON
         star.School_Number = s.School_Number
-    WHERE Latitude > 44.419600000000
+    WHERE Latitude > 45.3739621 -- North of Parry Sound
 ),
 CTE_NORTHERN_SCHOOLS_SKILLS AS (
     SELECT
@@ -281,7 +281,7 @@ CTE_SOUTHERN_SCHOOLS AS (
     JOIN [dbo].[School] s
     ON
         star.School_Number = s.School_Number
-    WHERE Latitude < 44.419600000000
+    WHERE Latitude < 45.3739621 -- North of Parry Sound
 ),
 CTE_SOUTHERN_SCHOOLS_SKILLS AS (
     SELECT
